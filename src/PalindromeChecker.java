@@ -61,6 +61,13 @@ public class PalindromeChecker {
         } else {
             System.out.println("(deque) " + testString + " is not a palindrome.");
         }
+
+        // UC8: Linked List Based Palindrome Checker
+        if (linkedListPalindrome(testString)) {
+            System.out.println("(linked-list) " + testString + " is a palindrome.");
+        } else {
+            System.out.println("(linked-list) " + testString + " is not a palindrome.");
+        }
     }
 
     /**
@@ -160,5 +167,68 @@ public class PalindromeChecker {
             }
         }
         return true;
+    }
+
+    /**
+     * Builds a singly linked list from the string, finds the middle using fast
+     * and slow pointers, reverses the second half in-place, and then compares
+     * the two halves for palindrome equivalence.
+     */
+    private static boolean linkedListPalindrome(String s) {
+        // construct list
+        Node head = null;
+        Node tail = null;
+        for (char c : s.toCharArray()) {
+            Node node = new Node(c);
+            if (head == null) {
+                head = node;
+            } else {
+                tail.next = node;
+            }
+            tail = node;
+        }
+        if (head == null || head.next == null) {
+            return true;
+        }
+
+        // find middle
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // reverse second half
+        Node prev = null;
+        Node curr = slow;
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        Node secondHalf = prev; // head of reversed second half
+
+        // compare
+        Node p1 = head;
+        Node p2 = secondHalf;
+        while (p2 != null) {
+            if (p1.data != p2.data) {
+                return false;
+            }
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return true;
+    }
+
+    /**
+     * Simple node for linked list
+     */
+    private static class Node {
+        char data;
+        Node next;
+        Node(char d) { data = d; }
     }
 }
