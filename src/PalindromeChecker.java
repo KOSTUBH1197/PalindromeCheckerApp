@@ -68,6 +68,13 @@ public class PalindromeChecker {
         } else {
             System.out.println("(linked-list) " + testString + " is not a palindrome.");
         }
+
+        // UC9: Recursive Palindrome Checker
+        if (recursivePalindrome(testString)) {
+            System.out.println("(recursive) " + testString + " is a palindrome.");
+        } else {
+            System.out.println("(recursive) " + testString + " is not a palindrome.");
+        }
     }
 
     /**
@@ -230,5 +237,22 @@ public class PalindromeChecker {
         char data;
         Node next;
         Node(char d) { data = d; }
+    }
+
+    /**
+     * Recursively checks if substring [left:right] is palindrome.
+     */
+    private static boolean recursiveCheck(String s, int left, int right) {
+        if (left >= right) {
+            return true; // base condition
+        }
+        if (s.charAt(left) != s.charAt(right)) {
+            return false;
+        }
+        return recursiveCheck(s, left + 1, right - 1);
+    }
+
+    private static boolean recursivePalindrome(String s) {
+        return recursiveCheck(s, 0, s.length() - 1);
     }
 }
