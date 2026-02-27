@@ -16,5 +16,30 @@ public class PalindromeChecker {
 
         // After printing the welcome message the program can proceed to additional use
         // cases or simply exit. For now we just demonstrate the startup behavior.
+        // UC2: Print a Hardcoded Palindrome Result
+        String testString = "madam"; // hardcoded example
+        System.out.println("Checking hardcoded string: " + testString);
+        if (isPalindrome(testString)) {
+            System.out.println(testString + " is a palindrome.");
+        } else {
+            System.out.println(testString + " is not a palindrome.");
+        }
+        // this is UC 2 add this is in this code
+    }
+
+    /**
+     * Simple helper to determine if a string is a palindrome.
+     */
+    private static boolean isPalindrome(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
