@@ -75,6 +75,15 @@ public class PalindromeChecker {
         } else {
             System.out.println("(recursive) " + testString + " is not a palindrome.");
         }
+
+        // UC10: Case-Insensitive & Space-Ignored Palindrome
+        String normalized = normalize(testString);
+        System.out.println("Normalized input: " + normalized);
+        if (isPalindrome(normalized)) {
+            System.out.println("(normalized) " + testString + " is a palindrome when ignoring case and spaces.");
+        } else {
+            System.out.println("(normalized) " + testString + " is not a palindrome even when ignoring case and spaces.");
+        }
     }
 
     /**
@@ -254,5 +263,15 @@ public class PalindromeChecker {
 
     private static boolean recursivePalindrome(String s) {
         return recursiveCheck(s, 0, s.length() - 1);
+    }
+
+    /**
+     * Normalize input by removing whitespace and converting to lowercase.
+     */
+    private static String normalize(String s) {
+        if (s == null) {
+            return "";
+        }
+        return s.replaceAll("\\s+", "").toLowerCase();
     }
 }
