@@ -40,6 +40,13 @@ public class PalindromeChecker {
         } else {
             System.out.println("(char-array) " + testString + " is not a palindrome.");
         }
+
+        // UC5: Stack-Based Palindrome Checker
+        if (stackPalindrome(testString)) {
+            System.out.println("(stack) " + testString + " is a palindrome.");
+        } else {
+            System.out.println("(stack) " + testString + " is not a palindrome.");
+        }
     }
 
     /**
@@ -83,6 +90,23 @@ public class PalindromeChecker {
             }
             left++;
             right--;
+        }
+        return true;
+    }
+
+    /**
+     * Uses a Stack<Character> to push all characters then pop them back while
+     * comparing to the original string characters.
+     */
+    private static boolean stackPalindrome(String s) {
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+        for (char c : s.toCharArray()) {
+            stack.push(c);
+        }
+        for (char c : s.toCharArray()) {
+            if (!stack.empty() && stack.pop() != c) {
+                return false;
+            }
         }
         return true;
     }
