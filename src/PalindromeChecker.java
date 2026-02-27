@@ -16,10 +16,13 @@ public class PalindromeChecker {
 
         // After printing the welcome message the program can proceed to additional use
         // cases or simply exit. For now we just demonstrate the startup behavior.
-        // UC2: Print a Hardcoded Palindrome Result
+        // UC11: create service object to encapsulate palindrome logic
+        PalindromeChecker service = new PalindromeChecker();
+
+        // UC2: Print a Hardcoded Palindrome Result (now via OOP service)
         String testString = "madam"; // hardcoded example
         System.out.println("Checking hardcoded string: " + testString);
-        if (isPalindrome(testString)) {
+        if (service.checkPalindrome(testString)) {
             System.out.println(testString + " is a palindrome.");
         } else {
             System.out.println(testString + " is not a palindrome.");
@@ -79,7 +82,7 @@ public class PalindromeChecker {
         // UC10: Case-Insensitive & Space-Ignored Palindrome
         String normalized = normalize(testString);
         System.out.println("Normalized input: " + normalized);
-        if (isPalindrome(normalized)) {
+        if (service.checkPalindrome(normalized)) {
             System.out.println("(normalized) " + testString + " is a palindrome when ignoring case and spaces.");
         } else {
             System.out.println("(normalized) " + testString + " is not a palindrome even when ignoring case and spaces.");
@@ -87,13 +90,18 @@ public class PalindromeChecker {
     }
 
     /**
-     * Simple helper to determine if a string is a palindrome.
+     * Instance method demonstrating encapsulated palindrome logic.
+     * Uses a char-array and two-pointer technique internally.
      */
-    private static boolean isPalindrome(String s) {
+    public boolean checkPalindrome(String s) {
+        if (s == null) {
+            return false;
+        }
+        char[] chars = s.toCharArray();
         int left = 0;
-        int right = s.length() - 1;
+        int right = chars.length - 1;
         while (left < right) {
-            if (s.charAt(left) != s.charAt(right)) {
+            if (chars[left] != chars[right]) {
                 return false;
             }
             left++;
