@@ -40,6 +40,20 @@ public class PalindromeChecker {
         System.out.println("stackService result: " + stackService.checkPalindrome(testString));
         System.out.println("dequeService result: " + dequeService.checkPalindrome(testString));
 
+        // UC13: Performance Comparison
+        System.out.println("\n-- Performance Comparison --");
+        long t1 = time("default", () -> service.checkPalindrome(testString));
+        long t2 = time("stack-strategy", () -> stackService.checkPalindrome(testString));
+        long t3 = time("deque-strategy", () -> dequeService.checkPalindrome(testString));
+        long t4 = time("char-array", () -> charArrayPalindrome(testString));
+        long t5 = time("reverse-string", () -> reverseString(testString));
+        System.out.println("Timings (nanoseconds):");
+        System.out.println(" default      : " + t1);
+        System.out.println(" stack-strategy: " + t2);
+        System.out.println(" deque-strategy: " + t3);
+        System.out.println(" char-array   : " + t4);
+        System.out.println(" reverse      : " + t5);
+
         // UC3: Palindrome Check Using String Reverse
         String reversed = reverseString(testString);
         System.out.println("Reversed string: " + reversed);
@@ -309,6 +323,16 @@ public class PalindromeChecker {
 
     public boolean checkPalindrome(String s) {
         return strategy.check(s);
+    }
+
+    /**
+     * Utility to time a Runnable action and return duration in nanoseconds.
+     */
+    private static long time(String name, Runnable action) {
+        long start = System.nanoTime();
+        action.run();
+        long end = System.nanoTime();
+        return end - start;
     }
 
     /**
