@@ -33,6 +33,13 @@ public class PalindromeChecker {
         } else {
             System.out.println("(reverse-check) " + testString + " is not a palindrome.");
         }
+
+        // UC4: Character Array Based Palindrome Check
+        if (charArrayPalindrome(testString)) {
+            System.out.println("(char-array) " + testString + " is a palindrome.");
+        } else {
+            System.out.println("(char-array) " + testString + " is not a palindrome.");
+        }
     }
 
     /**
@@ -60,5 +67,23 @@ public class PalindromeChecker {
             reversed += s.charAt(i);
         }
         return reversed;
+    }
+
+    /**
+     * Converts the string to a char array and compares characters from both
+     * ends using a two-pointer technique.
+     */
+    private static boolean charArrayPalindrome(String s) {
+        char[] chars = s.toCharArray();
+        int left = 0;
+        int right = chars.length - 1;
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
