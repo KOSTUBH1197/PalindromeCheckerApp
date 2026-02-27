@@ -17,7 +17,14 @@ public class PalindromeChecker {
         // After printing the welcome message the program can proceed to additional use
         // cases or simply exit. For now we just demonstrate the startup behavior.
         // UC11: create service object to encapsulate palindrome logic
+        // UC12: also demonstrate strategy pattern
+        PalindromeStrategy stackStrat = new StackStrategy();
+        PalindromeStrategy dequeStrat = new DequeStrategy();
+        // default service using built-in algorithm
         PalindromeChecker service = new PalindromeChecker();
+        // additional services using specific strategies
+        PalindromeChecker stackService = new PalindromeChecker(stackStrat);
+        PalindromeChecker dequeService = new PalindromeChecker(dequeStrat);
 
         // UC2: Print a Hardcoded Palindrome Result (now via OOP service)
         String testString = "madam"; // hardcoded example
@@ -27,6 +34,11 @@ public class PalindromeChecker {
         } else {
             System.out.println(testString + " is not a palindrome.");
         }
+
+        // show dynamic switching
+        System.out.println("\n-- Strategy Pattern Demo --");
+        System.out.println("stackService result: " + stackService.checkPalindrome(testString));
+        System.out.println("dequeService result: " + dequeService.checkPalindrome(testString));
 
         // UC3: Palindrome Check Using String Reverse
         String reversed = reverseString(testString);
@@ -89,26 +101,6 @@ public class PalindromeChecker {
         }
     }
 
-    /**
-     * Instance method demonstrating encapsulated palindrome logic.
-     * Uses a char-array and two-pointer technique internally.
-     */
-    public boolean checkPalindrome(String s) {
-        if (s == null) {
-            return false;
-        }
-        char[] chars = s.toCharArray();
-        int left = 0;
-        int right = chars.length - 1;
-        while (left < right) {
-            if (chars[left] != chars[right]) {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
-    }
 
     /**
      * Reverse the input string using a for loop.
@@ -245,6 +237,78 @@ public class PalindromeChecker {
             p2 = p2.next;
         }
         return true;
+    }
+
+    // --- Strategy Pattern Types for UC12 ---
+    public interface PalindromeStrategy {
+        boolean check(String s);
+    }
+
+    public static class StackStrategy implements PalindromeStrategy {
+        @Override
+        public boolean check(String s) {
+            if (s == null) return false;
+            java.util.Stack<Character> stack = new java.util.Stack<>();
+            for (char c : s.toCharArray()) {
+                stack.push(c);
+            }
+            for (char c : s.toCharArray()) {
+                if (!stack.empty() && stack.pop() != c) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    public static class DequeStrategy implements PalindromeStrategy {
+        @Override
+        public boolean check(String s) {
+            if (s == null) return false;
+            java.util.Deque<Character> deque = new java.util.LinkedList<>();
+            for (char c : s.toCharArray()) {
+                deque.addLast(c);
+            }
+            while (deque.size() > 1) {
+                if (!deque.removeFirst().equals(deque.removeLast())) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    // Modified service constructors and check method for strategy
+    private PalindromeStrategy strategy;
+
+    public PalindromeChecker() {
+        this.strategy = new DefaultStrategy();
+    }
+
+    public PalindromeChecker(PalindromeStrategy strategy) {
+        this.strategy = strategy == null ? new DefaultStrategy() : strategy;
+    }
+
+    private static class DefaultStrategy implements PalindromeStrategy {
+        @Override
+        public boolean check(String s) {
+            if (s == null) return false;
+            char[] chars = s.toCharArray();
+            int left = 0;
+            int right = chars.length - 1;
+            while (left < right) {
+                if (chars[left] != chars[right]) {
+                    return false;
+                }
+                left++;
+                right--;
+            }
+            return true;
+        }
+    }
+
+    public boolean checkPalindrome(String s) {
+        return strategy.check(s);
     }
 
     /**
