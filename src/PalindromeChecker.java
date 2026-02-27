@@ -47,6 +47,13 @@ public class PalindromeChecker {
         } else {
             System.out.println("(stack) " + testString + " is not a palindrome.");
         }
+
+        // UC6: Queue + Stack Based Palindrome Check
+        if (queueStackPalindrome(testString)) {
+            System.out.println("(queue-vs-stack) " + testString + " is a palindrome.");
+        } else {
+            System.out.println("(queue-vs-stack) " + testString + " is not a palindrome.");
+        }
     }
 
     /**
@@ -105,6 +112,26 @@ public class PalindromeChecker {
         }
         for (char c : s.toCharArray()) {
             if (!stack.empty() && stack.pop() != c) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Enqueues characters into a queue and simultaneously pushes them onto a
+     * stack, then compares dequeue output with pop output to illustrate FIFO vs
+     * LIFO semantics.
+     */
+    private static boolean queueStackPalindrome(String s) {
+        java.util.Queue<Character> queue = new java.util.LinkedList<>();
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+        for (char c : s.toCharArray()) {
+            queue.add(c); // enqueue
+            stack.push(c); // push onto stack
+        }
+        while (!queue.isEmpty() && !stack.isEmpty()) {
+            if (!queue.remove().equals(stack.pop())) {
                 return false;
             }
         }
